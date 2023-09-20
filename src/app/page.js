@@ -17,10 +17,10 @@ export default function Home() {
                         </svg>
                     </div>
                     <input type="search" id="default-search"
-                           className="block w-1/4 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white focus:outline-none transition-all ease-in-out hover:w-1/2 duration-200"
+                           className="block w-1/4 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none transition-all ease-in-out hover:w-1/2 duration-200"
                            placeholder="Search for an item to use in your filter" required>
                     </input>
-                    <label htmlFor="file-upload" className="absolute top-0 right-8 rounded bg-emerald-800 p-3 transition-colors ease-in hover:bg-emerald-700">
+                    <label htmlFor="file-upload" className="absolute top-0 right-8 rounded bg-emerald-800 py-3 px-5 transition-colors ease-in hover:bg-emerald-700">
                         <h1>Upload Filter</h1>
                         <input type='file' id="file-upload" className="sr-only"/>
                     </label>
