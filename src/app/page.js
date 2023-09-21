@@ -21,7 +21,8 @@ export default function Home() {
 
     const handleDownload = () => {
         const element = document.createElement("a");
-        const file = new Blob([filter], {type: 'text/plain'});
+        const json = JSON.stringify(filter);
+        const file = new Blob([json], {type: 'text/plain'});
         element.href = URL.createObjectURL(file);
         element.download = "filter.json";
         document.body.appendChild(element); // Required for this to work in FireFox
