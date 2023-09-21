@@ -24,7 +24,6 @@ export default function Home() {
             const text = event.target.result
             localStorage.setItem('filter', text.toString())
             setFilter(JSON.parse(text.toString()))
-
         }
         reader.readAsText(file)
     }
@@ -44,9 +43,16 @@ export default function Home() {
         if (!search) return setSuggestions([])
         // find 5 suggestions and list them in terms of relevance
         const suggestions = Object.keys(referenceIDs).map((name) => {
-            return {name, id: referenceIDs[name], rating: compareTwoStrings(search, name)}
+            const split = referenceIDs[name].split('_')
+            split.pop()
+            return {name, id: referenceIDs[name], rating: compareTwoStrings(search, name), image: referenceIDs[name].startsWith('PET')  && !referenceIDs[name].includes("SKIN") && !referenceIDs[name].includes("ITEM") ? null : `https://sky.shiiyu.moe/item/${referenceIDs[name]}`}
         }).filter(({rating}) => rating > 0.3).sort((a, b) => b.rating - a.rating).slice(0, 5)
         setSuggestions(suggestions)
+    }
+
+    const handleClear = () => {
+        setFilter(null)
+        localStorage.removeItem('filter')
     }
 
     const createBlacklist = (blString) => {
@@ -78,6 +84,10 @@ export default function Home() {
                                             <button type="button"
                                                     className="flex items-center w-full px-2 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
                                                 <span className="ml-2">{suggestion.name}</span>
+                                                {suggestion.image ?
+                                                 <img src={suggestion.image}></img>
+                                                : null
+                                                }
                                             </button>
                                         </li>
                                     })}
@@ -94,6 +104,12 @@ export default function Home() {
                            onClick={handleDownload}>
                         <h1>Download Filter</h1>
                     </label>
+                    {filter ?
+                    <label htmlFor="file-clear"
+                        className="absolute top-0 right-96 rounded bg-pink-600 py-3 px-5 transition-all ease-in-out hover:bg-pink-600 hover:scale-105 duration-100"
+                        onClick={handleClear}>
+                        <h1>Clear Filter</h1>
+                    </label> : null}
                     {<div>{
                         filter ?
                             null
