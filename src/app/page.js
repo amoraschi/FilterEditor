@@ -76,7 +76,7 @@ export default function Home() {
                                     {suggestions.map((suggestion, index) => {
                                         return <li key={index} className="relative">
                                             <button type="button"
-                                                    className="flex items-center w-full px-2 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700">
+                                                    className="flex items-center w-full px-2 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
                                                 <span className="ml-2">{suggestion.name}</span>
                                             </button>
                                         </li>
