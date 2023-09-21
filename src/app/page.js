@@ -6,13 +6,13 @@ import {compareTwoStrings} from "string-similarity";
 export default function Home() {
     const [filter, setFilter] = useState(null)
     const [suggestions, setSuggestions] = React.useState([]);
-    
+
     useEffect(() => {
         if (typeof window !== "undefined") {
             setFilter(JSON.parse(localStorage.getItem("filter")))
         }
     }, [])
-    
+
     useEffect(() => {
         if (filter) localStorage.setItem('filter', JSON.stringify(filter))
     }, [filter])
@@ -45,7 +45,12 @@ export default function Home() {
         const suggestions = Object.keys(referenceIDs).map((name) => {
             const split = referenceIDs[name].split('_')
             split.pop()
-            return {name, id: referenceIDs[name], rating: compareTwoStrings(search, name), image: referenceIDs[name].includes('RUNE') || (referenceIDs[name].startsWith('PET') && !referenceIDs[name].includes("ITEM")) ? null : `https://sky.shiiyu.moe/item/${referenceIDs[name]}`}
+            return {
+                name,
+                id: referenceIDs[name],
+                rating: compareTwoStrings(search, name),
+                image: referenceIDs[name].includes('RUNE') || (referenceIDs[name].startsWith('PET') && !referenceIDs[name].includes("ITEM")) ? null : `https://sky.shiiyu.moe/item/${referenceIDs[name]}`
+            }
         }).filter(({rating}) => rating > 0.3).sort((a, b) => b.rating - a.rating).slice(0, 5)
         setSuggestions(suggestions)
     }
@@ -85,8 +90,9 @@ export default function Home() {
                                                     className="flex items-center w-full px-2 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
                                                 <span className="ml-2">{suggestion.name}</span>
                                                 {suggestion.image ?
-                                                 <img src={suggestion.image} className="w-8 h-8 absolute top-0 right-4"></img>
-                                                : null
+                                                    <img src={suggestion.image}
+                                                         className="w-8 h-8 absolute top-0 right-4"></img>
+                                                    : null
                                                 }
                                             </button>
                                         </li>
@@ -99,17 +105,20 @@ export default function Home() {
                         <h1>Upload Filter</h1>
                         <input type='file' id="file-upload" className="sr-only" onChange={handleUpload}/>
                     </label>
-                    <label htmlFor="file-download"
-                           className="absolute top-0 right-48 rounded bg-emerald-800 py-3 px-5 transition-all ease-in-out hover:bg-emerald-700 hover:scale-105 duration-100"
-                           onClick={handleDownload}>
-                        <h1>Download Filter</h1>
-                    </label>
+                    {
+                        filter ?
+                            <label htmlFor="file-download"
+                                   className="absolute top-0 right-48 rounded bg-emerald-800 py-3 px-5 transition-all ease-in-out hover:bg-emerald-700 hover:scale-105 duration-100"
+                                   onClick={handleDownload}>
+                                <h1>Download Filter</h1>
+                            </label> : null
+                    }
                     {filter ?
-                    <label htmlFor="file-clear"
-                        className="absolute top-0 right-96 rounded bg-pink-600 py-3 px-5 transition-all ease-in-out hover:bg-pink-600 hover:scale-105 duration-100"
-                        onClick={handleClear}>
-                        <h1>Clear Filter</h1>
-                    </label> : null}
+                        <label htmlFor="file-clear"
+                               className="absolute top-0 right-96 rounded bg-pink-600 py-3 px-5 transition-all ease-in-out hover:bg-pink-600 hover:scale-105 duration-100"
+                               onClick={handleClear}>
+                            <h1>Clear Filter</h1>
+                        </label> : null}
                     {<div>{
                         filter ?
                             null
