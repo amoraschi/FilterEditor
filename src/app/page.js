@@ -45,7 +45,7 @@ export default function Home() {
         const suggestions = Object.keys(referenceIDs).map((name) => {
             const split = referenceIDs[name].split('_')
             split.pop()
-            return {name, id: referenceIDs[name], rating: compareTwoStrings(search, name), image: referenceIDs[name].startsWith('PET')  && !referenceIDs[name].includes("SKIN") && !referenceIDs[name].includes("ITEM") ? null : `https://sky.shiiyu.moe/item/${referenceIDs[name]}`}
+            return {name, id: referenceIDs[name], rating: compareTwoStrings(search, name), image: referenceIDs[name].includes('RUNE') || (referenceIDs[name].startsWith('PET') && !referenceIDs[name].includes("ITEM")) ? null : `https://sky.shiiyu.moe/item/${referenceIDs[name]}`}
         }).filter(({rating}) => rating > 0.3).sort((a, b) => b.rating - a.rating).slice(0, 5)
         setSuggestions(suggestions)
     }
@@ -85,7 +85,7 @@ export default function Home() {
                                                     className="flex items-center w-full px-2 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
                                                 <span className="ml-2">{suggestion.name}</span>
                                                 {suggestion.image ?
-                                                 <img src={suggestion.image}></img>
+                                                 <img src={suggestion.image} className="w-8 h-8 absolute top-0 right-4"></img>
                                                 : null
                                                 }
                                             </button>
