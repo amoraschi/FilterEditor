@@ -36,7 +36,7 @@ export default function Home() {
         // find 5 suggestions and list them in terms of relevance
         const suggestions = Object.keys(referenceIDs).map((name) => {
             return {name, id: referenceIDs[name], rating: compareTwoStrings(search, name)}
-        }).sort((a, b) => b.rating - a.rating).slice(0, 5)
+        }).filter(({rating}) => rating > 0.3).sort((a, b) => b.rating - a.rating).slice(0, 5)
         setSuggestions(suggestions)
     }
 
