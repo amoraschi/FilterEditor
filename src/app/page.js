@@ -14,8 +14,7 @@ export default function Home() {
         const reader = new FileReader()
         reader.onload = (event) => {
             const text = event.target.result
-            console.log(text)
-            setFilter(text);
+            setFilter(JSON.parse(text));
         }
         reader.readAsText(file)
     }
@@ -40,29 +39,24 @@ export default function Home() {
         setSuggestions(suggestions)
     }
 
+    const createBlacklist = (blString) => {
+
+    }
+
     return (
         <main className="select-none tracking-tight">
             <div>
                 <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500">BinMaster
                     Config Editor</h1>
             </div>
-            <div className="p-5">
+            <div className="p-5 mx-2 my-5">
                 <label htmlFor="default-search"
                        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div className="relative">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                        </svg>
-                    </div>
                     <input type="search" id="default-search"
-                           className="block w-1/4 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none transition-all ease-in-out hover:w-1/2 duration-200"
+                           className="block w-1/4 py-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none transition-all ease-in-out hover:w-1/2 duration-200"
                            placeholder="Search for an item to use in your filter" required onChange={handleSearch}>
                     </input>
-                    {/* handle suggestions /*/}
                     {
                         suggestions.length > 0 ?
                             <div className="absolute z-10 w-1/4 mt-2 bg-white rounded-md shadow-lg dark:bg-gray-800">
@@ -90,9 +84,44 @@ export default function Home() {
                     </label>
                     {<div>{
                         filter ?
-                            filter.split("\n").map((line, index) => {
-                                return <div key={index}>{line}</div>
-                            }) : null
+                            null
+                            :
+                            <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500 p-6">
+                                No filter loaded! Upload a filter to get started.
+                            </h1>
+                    }</div>}
+                    {/*filter opts*/}
+                    {<div className="p-6">{
+                        filter ?
+                            <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500 p-6">
+                                Blacklist
+                            </h1>
+                            :
+                            null
+                    }</div>}
+                    {<div className="p-6">{
+                        filter ?
+                            <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500 p-6">
+                                Whitelist
+                            </h1>
+                            :
+                            null
+                    }</div>}
+                    {<div className="p-6">{
+                        filter ?
+                            <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500 p-6">
+                                User FlipFinder
+                            </h1>
+                            :
+                            null
+                    }</div>}
+                    {<div className="p-6">{
+                        filter ?
+                            <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500 p-6">
+                                TBL
+                            </h1>
+                            :
+                            null
                     }</div>}
                 </div>
             </div>
