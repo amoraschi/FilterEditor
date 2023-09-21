@@ -5,17 +5,17 @@ import {compareTwoStrings} from "string-similarity";
 
 export default function Home() {
     const [filter, setFilter] = useState(null)
+    const [suggestions, setSuggestions] = React.useState([]);
     
     useEffect(() => {
         if (typeof window !== "undefined") {
             setFilter(JSON.parse(localStorage.getItem("filter")))
         }
     }, [])
+    
     useEffect(() => {
         if (filter) localStorage.setItem('filter', JSON.stringify(filter))
     }, [filter])
-
-    const [suggestions, setSuggestions] = React.useState([]);
 
     const handleUpload = (event) => {
         const file = event.target.files[0]
