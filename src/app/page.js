@@ -1,20 +1,17 @@
 "use client";
 import React, {useEffect, useState} from 'react';
-import Image from 'next/image'
-import Script from 'next/script'
 import referenceIDs from '../constants/search_ids.json'
 import {compareTwoStrings} from "string-similarity";
 
-
 export default function Home() {
     const [filter, setFilter] = useState(null)
+    
     useEffect(() => {
         if (typeof window !== "undefined") {
             setFilter(JSON.parse(localStorage.getItem("filter")))
         }
     }, [])
     useEffect(() => {
-
         if (filter) localStorage.setItem('filter', JSON.stringify(filter))
     }, [filter])
 
