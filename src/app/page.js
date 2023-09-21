@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import Image from 'next/image'
+import referenceIDs from '../constants/search_ids.json'
 
 export default function Home() {
     const [filter, setFilter] = React.useState(null);
@@ -26,6 +27,11 @@ export default function Home() {
         element.remove();
     }
 
+    const handleSearch = (event) => {
+        const search = event.target.value;
+
+    }
+
     return (
         <main className="select-none tracking-tight">
             <div>
@@ -46,7 +52,7 @@ export default function Home() {
                     </div>
                     <input type="search" id="default-search"
                            className="block w-1/4 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none transition-all ease-in-out hover:w-1/2 duration-200"
-                           placeholder="Search for an item to use in your filter" required>
+                           placeholder="Search for an item to use in your filter" required onChange={handleSearch}>
                     </input>
                     <label htmlFor="file-upload"
                            className="absolute top-0 right-8 rounded bg-emerald-800 py-3 px-5 transition-all ease-in-out hover:bg-emerald-700 hover:scale-105 duration-100">
