@@ -34,7 +34,6 @@ export default function Home() {
 
     const handleDownload = () => {
         const element = document.createElement("a");
-        console.log(JSON.stringify(filter))
         const file = new Blob([JSON.stringify(filter)], {type: 'text/plain'});
         element.href = URL.createObjectURL(file);
         element.download = "filter.json";
