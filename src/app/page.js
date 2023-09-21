@@ -1,12 +1,23 @@
 "use client";
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Image from 'next/image'
 import Script from 'next/script'
 import referenceIDs from '../constants/search_ids.json'
 import {compareTwoStrings} from "string-similarity";
 
+
 export default function Home() {
-    const [filter, setFilter] = React.useState(null);
+    const [filter, setFilter] = useState(null)
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setFilter(JSON.parse(localStorage.getItem("filter")))
+        }
+    }, [])
+    useEffect(() => {
+
+        if (filter) localStorage.setItem('filter', JSON.stringify(filter))
+    }, [filter])
+
     const [suggestions, setSuggestions] = React.useState([]);
 
     const handleUpload = (event) => {
@@ -14,14 +25,17 @@ export default function Home() {
         const reader = new FileReader()
         reader.onload = (event) => {
             const text = event.target.result
-            setFilter(JSON.parse(text));
+            localStorage.setItem('filter', text.toString())
+            setFilter(JSON.parse(text.toString()))
+
         }
         reader.readAsText(file)
     }
 
     const handleDownload = () => {
         const element = document.createElement("a");
-        const file = new Blob([filter], {type: 'text/plain'});
+        console.log(JSON.stringify(filter))
+        const file = new Blob([JSON.stringify(filter)], {type: 'text/plain'});
         element.href = URL.createObjectURL(file);
         element.download = "filter.json";
         document.body.appendChild(element); // Required for this to work in FireFox
@@ -44,7 +58,9 @@ export default function Home() {
     }
 
     return (
+
         <main className="select-none tracking-tight">
+
             <div>
                 <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500">BinMaster
                     Config Editor</h1>
@@ -125,6 +141,7 @@ export default function Home() {
                     }</div>}
                 </div>
             </div>
+
         </main>
     )
 }
