@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import referenceIDs from '../constants/search_ids.json'
 import {compareTwoStrings} from "string-similarity";
 import {List} from 'react-virtualized';
+import AutoSizer from "react-virtualized-auto-sizer";
 
 export default function Home() {
     const [filter, setFilter] = useState(null)
@@ -40,7 +41,7 @@ export default function Home() {
 
     const handleDownload = () => {
         const element = document.createElement("a");
-        const file = new Blob([JSON.stringify(filter)], {type: 'text/plain'});
+        const file = new Blob([JSON.stringify(filter, null, 2)], {type: 'text/plain'});
         element.href = URL.createObjectURL(file);
         element.download = "filter.json";
         document.body.appendChild(element); // Required for this to work in FireFox
@@ -104,8 +105,12 @@ export default function Home() {
     }
 
     const renderBlacklist = ({index, key, style}) => {
-        console.log('rendering blacklist')
         const entry = Object.keys(simpleFilter.blacklist)[index]
+        const remove = () => {
+            const newFilter = {...filter}
+            newFilter.blacklist.splice(index, 1)
+            setFilter(newFilter)
+        }
         return (
             <div className="relative bg-gray-900 w-64 h-64 p-6 m-4 rounded" key={key} style={style}>
                 <h1 className="text-center font-mono">
@@ -113,7 +118,7 @@ export default function Home() {
                 </h1>
                 <img src={`https://sky.shiiyu.moe/item/${entry}`} alt={entry}
                      className="absolute h-8 w-8 top-5 right-5"></img>
-                <button className="bg-red-700 transition-colors hover:bg-red-600 absolute bottom-4 right-5 p-2 rounded">
+                <button className="bg-red-700 transition-colors hover:bg-red-600 absolute bottom-4 right-5 p-2 rounded" onClick={remove}>
                     Remove
                 </button>
             </div>
@@ -166,17 +171,25 @@ export default function Home() {
                         <h1>Clear Filter</h1>
                     </label> : null}
                     {<div>{filter ? null :
-                        <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500 p-6">
+                        <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500">
                             No filter loaded! Upload a filter to get started.
                         </h1>}</div>}
                     {/*filter opts*/}
-                    {<div className="p-6">{simpleFilter ?
-                        <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500 p-6">
+                    {<div className="pb-6 pt-8">{simpleFilter ?
+                        <h1 className="font-sans font-light text-3xl text-center transition-colors hover:text-cyan-500">
                             Blacklist
                         </h1> : null}
-                        {simpleFilter ?
-                            <List rowRenderer={renderBlacklist} width={700} height={400} rowHeight="h-64" rowWidth={256} rowCount={Object.keys(simpleFilter.blacklist).length}>
-                            </List> : null}
+                        <div className="flex items-center pb-2 h-48 justify-center">
+                            {simpleFilter ?
+                                <AutoSizer disableWidth={true}>
+                                    {({height}) => (
+                                        <List rowRenderer={renderBlacklist} width={1200} height={height} rowHeight={100}
+                                              rowWidth={50} rowCount={Object.keys(simpleFilter.blacklist).length}>
+                                        </List>
+                                    )}
+                                </AutoSizer>
+                                : null}
+                        </div>
                     </div>}
                     {<div className="p-6">{simpleFilter ?
                         <h1 className="font-sans font-light m-6 text-3xl text-center transition-colors hover:text-cyan-500 p-6">
