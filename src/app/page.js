@@ -26,7 +26,6 @@ export default function Home() {
     }, [filter])
 
     const handleUpload = (event) => {
-        console.log('UPLOAD EVENT')
         const file = event.target.files[0]
         const reader = new FileReader()
         reader.onload = (event) => {
@@ -105,6 +104,7 @@ export default function Home() {
     }
 
     const renderBlacklist = ({index, key, style}) => {
+        console.log('rendering blacklist')
         const entry = Object.keys(simpleFilter.blacklist)[index]
         return (
             <div className="relative bg-gray-900 w-64 h-64 p-6 m-4 rounded" key={key} style={style}>
@@ -175,8 +175,7 @@ export default function Home() {
                             Blacklist
                         </h1> : null}
                         {simpleFilter ?
-                            <List RowRenderer={renderBlacklist} width={700} itemHeight={50}
-                                  itemKey="id">
+                            <List rowRenderer={renderBlacklist} width={700} height={400} rowHeight="h-64" rowWidth={256} rowCount={Object.keys(simpleFilter.blacklist).length}>
                             </List> : null}
                     </div>}
                     {<div className="p-6">{simpleFilter ?
