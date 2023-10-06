@@ -12,7 +12,7 @@ export default function Suggestions ({ suggestions }) {
           <Suggestion
             key={index}
             name={suggestion.name}
-            image={suggestion.image} 
+            image={suggestion.image}
           />
         ))}
       </ul>

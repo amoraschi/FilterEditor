@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { compareTwoStrings } from 'string-similarity'
+import { stringSimilarity } from 'string-similarity-js'
 import Upload from '../Handler/Upload'
 import referenceIDs from '../../constants/search_ids.json'
 import Download from '../Handler/Download'
@@ -27,7 +27,7 @@ export default function Search ({ filter, setFilter }) {
       return {
         name,
         id: referenceIDs[name],
-        rating: compareTwoStrings(search, name),
+        rating: stringSimilarity(search, name),
         image: referenceIDs[name].includes('RUNE') || (referenceIDs[name].startsWith('PET') && !referenceIDs[name].includes("ITEM")) ? null : `https://sky.shiiyu.moe/item/${referenceIDs[name]}`
       }
     }).filter(({ rating }) => rating > 0.3).sort((a, b) => b.rating - a.rating).slice(0, 5)
@@ -45,9 +45,9 @@ export default function Search ({ filter, setFilter }) {
 
     const {
       blacklist,
-      whitelist,
-      true_blacklist,
-      user_flip_finder
+      // whitelist,
+      // true_blacklist,
+      // user_flip_finder
     } = simplified
 
     // if there are same keys and same attributes but different values, then group them together
@@ -117,7 +117,7 @@ export default function Search ({ filter, setFilter }) {
       <input
         type='search'
         id='default-search'
-        className='block w-1/4 py-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none transition-all ease-in-out hover:w-1/2 duration-200'
+        className='block w-1/4 py-4 pl-5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none transition-all ease-in-out hover:w-1/2 duration-200'
         placeholder='Search for an item to use in your filter'
         required
         onChange={handleSearch}
