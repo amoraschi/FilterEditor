@@ -1,31 +1,68 @@
 import { useState } from 'react'
 import Heading from '../Heading/Heading'
-import Search from '../Search/Search'
+import Upload from '../Handlers/Upload'
+import Clear from '../Handlers/Clear'
+import Download from '../Handlers/Download'
+import Link from '../Link/Linked'
+import Linked from '../Link/Linked'
 
 export default function Home () {
   const [filter, setFilter] = useState(null)
 
+  const pages = [
+    {
+      name: 'Blacklist',
+      url: '/blacklist'
+    },
+    {
+      name: 'Whitelist',
+      url: '/whitelist'
+    },
+    {
+      name: 'UserFlipFinder',
+      url: '/userflipfinder'
+    },
+    {
+      name: 'True Blacklist',
+      url: '/trueblacklist'
+    }
+  ]
+
   return (
-    <main
-      className='select-none tracking-tight'
+    <div
+      className='absolute inset-0 flex flex-col items-center justify-center select-none tracking-tight'
     >
       <Heading
         content='Config Editor'
       />
       <div
-        className='p-5 mx-2 my-5'
+        className='flex flex-row space-x-2'
       >
-        <label
-          htmlFor='default-search'
-          className='mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white'
-        >
-          Search
-        </label>
-        <Search
+        <Upload
+          setFilter={setFilter}
+        />
+        <Download
+          filter={filter}
+        />
+        <Clear
           filter={filter}
           setFilter={setFilter}
         />
       </div>
-    </main>
+      <div
+        className='flex flex-row space-x-2 mt-5'
+      >
+        {pages.map((page, index) => {
+          return (
+            <Linked
+              key={index}
+              filter={filter}
+              url={page.url}
+              name={page.name}
+            />
+          )
+        })}
+      </div>
+    </div>
   )
 }
