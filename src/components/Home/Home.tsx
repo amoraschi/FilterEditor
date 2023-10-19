@@ -1,32 +1,40 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Heading from '../Heading/Heading'
 import Upload from '../Handlers/Upload'
 import Clear from '../Handlers/Clear'
 import Download from '../Handlers/Download'
-import Link from '../Link/Linked'
 import Linked from '../Link/Linked'
 
-export default function Home () {
-  const [filter, setFilter] = useState(null)
+const pages = [
+  {
+    name: 'Blacklist',
+    url: '/blacklist'
+  },
+  {
+    name: 'Whitelist',
+    url: '/whitelist'
+  },
+  {
+    name: 'UserFlipFinder',
+    url: '/userflipfinder'
+  },
+  {
+    name: 'True Blacklist',
+    url: '/trueblacklist'
+  }
+]
 
-  const pages = [
-    {
-      name: 'Blacklist',
-      url: '/blacklist'
-    },
-    {
-      name: 'Whitelist',
-      url: '/whitelist'
-    },
-    {
-      name: 'UserFlipFinder',
-      url: '/userflipfinder'
-    },
-    {
-      name: 'True Blacklist',
-      url: '/trueblacklist'
+
+export default function Home () {
+  const [filter, setFilter] = useState<string | null>(null)
+
+  useEffect(() => {
+    const stored = localStorage.getItem('filter')
+
+    if (stored != null) {
+      setFilter(stored)
     }
-  ]
+  }, [])
 
   return (
     <div
@@ -36,13 +44,15 @@ export default function Home () {
         content='Config Editor'
       />
       <div
-        className='flex flex-row space-x-2'
+        className='flex flex-row space-x-3'
       >
         <Upload
+          // filter={filter}
           setFilter={setFilter}
         />
         <Download
           filter={filter}
+          // setFilter={setFilter}
         />
         <Clear
           filter={filter}
@@ -50,13 +60,13 @@ export default function Home () {
         />
       </div>
       <div
-        className='flex flex-row space-x-2 mt-5'
+        className='flex flex-row space-x-3 mt-5'
       >
         {pages.map((page, index) => {
           return (
             <Linked
               key={index}
-              filter={filter}
+              disabled={filter == null}
               url={page.url}
               name={page.name}
             />
