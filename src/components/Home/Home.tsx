@@ -47,12 +47,10 @@ export default function Home () {
         className='flex flex-row space-x-3'
       >
         <Upload
-          // filter={filter}
           setFilter={setFilter}
         />
         <Download
           filter={filter}
-          // setFilter={setFilter}
         />
         <Clear
           filter={filter}

@@ -16,6 +16,10 @@ export interface Attribute {
   value: any
 }
 
+const attributesNoValue = [
+  'nil'
+]
+
 export default function BlacklistItem ({ suggestion, filter, setFilter, type }: BlacklistItemProps) {
   const [popUp, setPopUp] = useState(false)
   const [addedAttributes, setAddedAttributes] = useState<Attribute[]>([])
@@ -29,6 +33,10 @@ export default function BlacklistItem ({ suggestion, filter, setFilter, type }: 
     const attributes = addedAttributes.sort((a, b) => {
       return a.name.localeCompare(b.name)
     }).map((attribute) => {
+      if (attribute.value === '') {
+        return attribute.name
+      }
+
       return `${attribute.name}:${attribute.value}`
     }).join('&')
 
@@ -53,6 +61,10 @@ export default function BlacklistItem ({ suggestion, filter, setFilter, type }: 
     const attributes = addedAttributes.sort((a, b) => {
       return a.name.localeCompare(b.name)
     }).map((attribute) => {
+      if (attribute.value === '') {
+        return attribute.name
+      }
+
       return `${attribute.name}:${attribute.value}`
     }).join('&')
 
@@ -87,7 +99,7 @@ export default function BlacklistItem ({ suggestion, filter, setFilter, type }: 
     event.preventDefault()
     const attribute = document.querySelector('select') as HTMLSelectElement
     const value = document.querySelector('#add') as HTMLInputElement
-    if (attribute.value === '' || value.value === '') {
+    if (attribute.value === '' || (value.value === '' && !attributesNoValue.includes(attribute.value))) {
       return
     }
 
@@ -125,7 +137,7 @@ export default function BlacklistItem ({ suggestion, filter, setFilter, type }: 
 
       return {
         name,
-        value
+        value: value == null ? '' : value
       }
     })
 

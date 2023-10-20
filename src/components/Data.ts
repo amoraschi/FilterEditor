@@ -11,7 +11,7 @@ export const Attributes = [
   "ultimate_swarm",
   "titan_killer",
   "cleave",
-  // "nil",
+  "nil",
   "growth",
   "protection",
   "ultimate_bank",
